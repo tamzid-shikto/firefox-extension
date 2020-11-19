@@ -85,6 +85,11 @@ class FirebaseDatabase{
     var dt = await Web.Request(this.url + path + ".json", "PUT", new_data);
     return dt;
   }
+  
+  async Delete(path){
+    var dt = await Web.Request(this.url + path + ".json", "DELETE");
+    return dt;
+  }
 }
 
 class CustomListView{
@@ -113,7 +118,7 @@ class CustomListView{
         CustomListView.ChangeLastID();
     });
     
-    console.log(new_html);
+    //console.log(new_html);
     //console.log(this.ChangeLastID());
     
     _(this.base).appendChild(new_element);
