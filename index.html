@@ -149,18 +149,24 @@
           "email":email.value
         }
         
-        p_name.value = "";
-        f_name.value = "";
-        email.value = "";
+        if(new_data.tag == "" || new_data.name == "" || new_data.email == ""){
+          return;
+        }else{
+          p_name.value = "";
+          f_name.value = "";
+          email.value = "";
+
+          var path = "data/" + new_data.tag + "/";
+
+          await db.Update(path + "name", JSON.stringify(new_data.name));
+          await db.Update(path + "email", JSON.stringify(new_data.email));
+
+          cancel_add_profile();
+          update_list();
+          alert("Data added");
+        }
         
-        var path = "data/" + new_data.tag + "/";
         
-        await db.Update(path + "name", JSON.stringify(new_data.name));
-        await db.Update(path + "email", JSON.stringify(new_data.email));
-        
-        cancel_add_profile();
-        update_list();
-        alert("Data added");
       }
       
       async function update_profile(){
@@ -174,19 +180,25 @@
           "email":email.value
         }
         
-        p_name.value = "";
-        f_name.value = "";
-        email.value = "";
+        if(new_data.tag == "" || new_data.name == "" || new_data.email == ""){
+          return;
+        }else{
+          p_name.value = "";
+          f_name.value = "";
+          email.value = "";
+
+          var path = "data/" + new_data.tag + "/";
+
+          await db.Update(path + "name", JSON.stringify(new_data.name));
+          await db.Update(path + "email", JSON.stringify(new_data.email));
+
+          cancel_add_profile();
+          update_list();
+
+          alert("Data Updated");
+        }
         
-        var path = "data/" + new_data.tag + "/";
         
-        await db.Update(path + "name", JSON.stringify(new_data.name));
-        await db.Update(path + "email", JSON.stringify(new_data.email));
-        
-        cancel_add_profile();
-        update_list();
-        
-        alert("Data Updated");
       }
       
       function no_quote(str){
