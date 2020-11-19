@@ -96,6 +96,12 @@ async function set_buttons(){
   var box = document.createElement("DIV");
   document.body.appendChild(box);
   box.style = "height:auto;width:auto;position:fixed;bottom:0px;background:white;border: 2px solid black;";
+  
+  //document.body.addEventListener('keypress', function(e) {
+  //  if (e.key == "Escape") {
+   //   box.innerHTML = "";
+   // }
+  //});
 
   if(name_box != null){
     var result = "";
