@@ -80,6 +80,9 @@
             },
             "dummy":{
               "innerHTML":key
+            },
+            "d2":{
+              "innerHTML":key
             }
           });
         }
@@ -99,6 +102,19 @@
         email.value = no_quote(g_data[id]["email"]);
         
         console.log(id);
+      }
+      
+      async function delete_profile(btn){
+        var id = btn.firstChild.innerHTML;
+        
+        if (confirm('Are you sure you want to delete: ' + id)) {
+          var r = await db.Delete("data/" + id);
+          console.log(r);
+          update_list();
+        } else {
+          
+        }
+        
       }
       
       
