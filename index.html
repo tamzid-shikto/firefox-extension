@@ -6,40 +6,175 @@
     <style>
         input {
             font-size:16px;
+            flex:1;
         }
         button {
             font-size: 16px;
         }
+        #list_element_base_{
+            transition:0.2s;
+        }
+        #list_element_base_:hover{
+            background: #EEEEEE;
+        }
     </style>
 </head>
 <body style="font-size:16px;"> 
-    <div class="fill gravity-center align-v">
-        <div class="fill-w">
-            <button id="create_profile_btn"> Create profile</button>
-            <div id="add_profile_base" class="red card gravity-center align-v">
-                <div>
+    <div class="gravity-center align-v">
+        <div class="fill-w gravity-top-center align-v">
+            <div id="create_profile_btn" class="fill-w">
+              <button onclick="show_add_profile();"> Create profile</button>
+            </div>
+            
+            <div id="add_profile_base" class="card gravity-center align-v" style="display:none;width:70%;">
+                <div class="gravity-center">
                     <span>Profile name:</span>
                     <input id="profile_name" class="light-gray" />
                 </div>
-                <div>
+                <div class="gravity-center">
                     <span>Firm's name:</span>
                     <input id="firm_name" class="light-gray" />
                 </div>
-                <div>
+                <div class="gravity-center">
                     <span>Email address:</span>
                     <input id="email" class="light-gray" />
                 </div>
-                <div style="width:50%;" class="bold gravity-bottom-center align-h">
+                <div class="bold fill-w" style="display:flex;justify-content:flex-end;">
                     <button onclick="cancel_add_profile();" class="white flat" style="color:red;">Cancel</button>
-                    <button onclick="new_profile();">Add new profile</button>
+                    <button id="n_p_btn" onclick="new_profile();">Add new profile</button>
+                    <button id="u_p_btn" onclick="update_profile();">Save data</button>
                 </div>
 
             </div>
         </div>
-        <div id="profile_list">
-            a
+      
+        <div class="gravity-center fill-w">
+            <div id="profile_list" class="fill-w gravity-center align-v">
+
+            </div>
         </div>
+        
     </div>
 
-    <script></script>
+    <script>      
+      var db = new FirebaseDatabase("https://shikto-98080.firebaseio.com/firebase-extension/");
+      var g_data = {};
+      update_list();      
+            
+      async function update_list(){
+        _("profile_list").innerHTML = "";
+        var data_raw = await db.Get("data");
+        var data = JSON.parse(data_raw);
+        g_data = data;
+        var list_html = await Web.Get("list_html.html");
+
+        var listview = new CustomListView("profile_list", list_html);
+        
+        //console.log(list_html);
+        
+
+        for (var [key, value] of Object.entries(data)) {
+          listview.AddElement({
+            "f_tag":{
+              "innerHTML":key            
+            },
+            "dummy":{
+              "innerHTML":key
+            }
+          });
+        }
+      }
+      
+      function edit_profile(btn){
+        var id = btn.firstChild.innerHTML;
+        
+        show_edit_profile();
+        
+        var p_name = _("profile_name");
+        var f_name = _("firm_name");
+        var email = _("email");
+        
+        p_name.value = no_quote(id);
+        f_name.value = no_quote(g_data[id]["name"]);
+        email.value = no_quote(g_data[id]["email"]);
+        
+        console.log(id);
+      }
+      
+      
+      function show_add_profile(){
+        hide("create_profile_btn");
+        show("add_profile_base");
+        hide("profile_list");       
+        show("n_p_btn");
+        hide("u_p_btn");  
+      }
+      function show_edit_profile(){
+        hide("create_profile_btn");
+        show("add_profile_base");
+        hide("profile_list");       
+        hide("n_p_btn");
+        show("u_p_btn");  
+      }
+      function cancel_add_profile(){
+        show("create_profile_btn");
+        hide("add_profile_base");
+        show("profile_list");
+      }
+      
+      async function new_profile(){
+        var p_name = _("profile_name");
+        var f_name = _("firm_name");
+        var email = _("email");
+        
+        var new_data = {
+          "tag":p_name.value,
+          "name":f_name.value,
+          "email":email.value
+        }
+        
+        p_name.value = "";
+        f_name.value = "";
+        email.value = "";
+        
+        var path = "data/" + new_data.tag + "/";
+        
+        await db.Update(path + "name", JSON.stringify(new_data.name));
+        await db.Update(path + "email", JSON.stringify(new_data.email));
+        
+        cancel_add_profile();
+        update_list();
+        alert("Data added");
+      }
+      
+      async function update_profile(){
+        var p_name = _("profile_name");
+        var f_name = _("firm_name");
+        var email = _("email");
+        
+        var new_data = {
+          "tag":p_name.value,
+          "name":f_name.value,
+          "email":email.value
+        }
+        
+        p_name.value = "";
+        f_name.value = "";
+        email.value = "";
+        
+        var path = "data/" + new_data.tag + "/";
+        
+        await db.Update(path + "name", JSON.stringify(new_data.name));
+        await db.Update(path + "email", JSON.stringify(new_data.email));
+        
+        cancel_add_profile();
+        update_list();
+        
+        alert("Data Updated");
+      }
+      
+      function no_quote(str){
+        return _replaceAll("\"", "", str);
+      }
+    </script>
 </body>
