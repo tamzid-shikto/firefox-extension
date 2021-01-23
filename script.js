@@ -8,18 +8,20 @@ var f_i_n = parseInt(first_input_id);
 var data = {};
 
 //----------------------------------------
-var name_box = _("row" + (f_i_n + 0) + "_1_1");
-var email_box = _("row" + (f_i_n + 0) + "_1_2");
+var all_input = document.getElementsByTagName("input");
 
-var z1_box = _("row" + (f_i_n + 3) + "_1_1");
-var z2_box = _("row" + (f_i_n + 3) + "_1_2");
-var z3_box = _("row" + (f_i_n + 3) + "_1_3");
-var z4_box = _("row" + (f_i_n + 3) + "_1_4");
-var z5_box = _("row" + (f_i_n + 3) + "_1_5");
+var name_box = all_input[0];
+var email_box = all_input[1];
 
-var y1_box = _("row" + (f_i_n + 2) + "_1_1");
-var y2_box = _("row" + (f_i_n + 2) + "_1_2");
-var y3_box = _("row" + (f_i_n + 2) + "_1_3");
+var z1_box = all_input[8];
+var z2_box = all_input[9];
+var z3_box = all_input[10];
+var z4_box = all_input[11];
+var z5_box = all_input[12];
+
+var y1_box = all_input[5];
+var y2_box = all_input[6];
+var y3_box = all_input[7];
 
 
 function replace_all__(str){
